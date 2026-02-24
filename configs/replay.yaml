@@ -1,0 +1,3 @@
+input_jsonl: data/sample_day.jsonl
+seed: 42
+speed: 10.0

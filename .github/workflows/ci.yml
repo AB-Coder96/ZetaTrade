@@ -1,0 +1,30 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DZF_ENABLE_TESTS=ON
+
+      - name: Build
+        run: |
+          cmake --build build -j
+
+      - name: Test
+        run: |
+          ctest --test-dir build --output-on-failure
+
+      - name: Smoke bench
+        run: |
+          ./build/Zetaforge_bench --config configs/bench.yaml --out out/bench_ci.csv
+          test -s out/bench_ci.csv

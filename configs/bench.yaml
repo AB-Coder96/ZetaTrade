@@ -1,0 +1,4 @@
+input_jsonl: data/sample_day.jsonl
+seed: 42
+warmup_events: 100
+measure_events: 500
