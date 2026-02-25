@@ -49,7 +49,6 @@ bool L2Book::validate() const {
   if (!bids_.empty() && !asks_.empty()) {
     const auto bb = bids_.begin()->first;
     const auto ba = asks_.begin()->first;
-    // Allow locked markets (bb == ba). Only reject truly crossed books.
     if (bb > ba) return false;
   }
   return true;
