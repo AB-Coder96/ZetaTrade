@@ -89,6 +89,20 @@ or on windows:
 ```bash
 ./Zetaforge_bench --config ../configs/bench.yaml --out ../out/bench.csv
 ```
+## Determinism & Bench Methodology
+
+- Fixed dataset + seed: every benchmark run should specify --input <file> and --seed <N>
+
+- Warmup: run a warmup period (e.g., 10s) before sampling
+
+- CPU pinning / affinity: pin the hot thread to a single core when measuring tails (p99/p99.9)
+
+- Release flags: build in Release (-O3 -DNDEBUG) and record compiler version
+
+- Record environment: CPU model + OS/kernel version per run (store in out/latest/meta.json or similar)
+
+- Logging off hot-path: spdlog should be disabled or minimal on the critical path during benchmarks
+
 
 ## Benchmarks (autoupdated at runs)
 
