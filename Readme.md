@@ -147,3 +147,9 @@ Zetaforge/
 - Add kernel-bypass ingest experiment (AF_XDP) behind a feature flag
 - Continuous benchmark regression via CI
 - Drift monitoring + PnL attribution panels in MarketOps dashboard
+
+## next step
+- Fix checksum
+- complicate dataset beyond locked markets
+- 100k–1M events (including warm up)
+- maker|taker mode implement
