@@ -4,15 +4,12 @@ Run C++ benchmarks and generate plots.
 Usage (from repo root):
   cd python
   python -m orchestration.run_bench --build-dir ..\\build --config ..\\configs\\bench.yaml --out-dir ..\\out
-
-This script is intentionally simple: it shells out to the compiled binary.
 """
 
 from __future__ import annotations
 
 import argparse
 import subprocess
-import sys
 from pathlib import Path
 
 import pandas as pd
@@ -20,9 +17,11 @@ import pandas as pd
 from analysis.plot_bench import plot_bench
 
 
-def run_cmd(cmd: list[str]) -> None:
+def run_cmd(cmd: list[str], *, cwd: Path | None = None) -> None:
     print("$", " ".join(cmd))
-    subprocess.check_call(cmd)
+    if cwd is not None:
+        print("  (cwd =", str(cwd), ")")
+    subprocess.check_call(cmd, cwd=str(cwd) if cwd is not None else None)
 
 
 def resolve_from_cwd(p: str) -> Path:
@@ -43,6 +42,9 @@ def main() -> None:
 
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    # repo_root/python/orchestration/run_bench.py -> parents[2] == repo_root
+    repo_root = Path(__file__).resolve().parents[2]
+
     # Handle Windows .exe if needed
     exe = build_dir / "Zetaforge_bench"
     exe_exe = exe.with_suffix(".exe")
@@ -54,13 +56,18 @@ def main() -> None:
 
     csv_path = out_dir / "bench.csv"
 
-    print("cwd      :", Path.cwd())
-    print("build_dir :", build_dir)
-    print("config   :", config_path)
-    print("out_dir  :", out_dir)
-    print("csv_path :", csv_path)
+    print("python cwd :", Path.cwd())
+    print("repo_root  :", repo_root)
+    print("build_dir  :", build_dir)
+    print("config     :", config_path)
+    print("out_dir    :", out_dir)
+    print("csv_path   :", csv_path)
 
-    run_cmd([str(exe), "--config", str(config_path), "--out", str(csv_path)])
+    # IMPORTANT: run the C++ binary from repo_root so 'data/...' resolves correctly
+    run_cmd(
+        [str(exe), "--config", str(config_path), "--out", str(csv_path)],
+        cwd=repo_root,
+    )
 
     df = pd.read_csv(csv_path)
     print(df)
