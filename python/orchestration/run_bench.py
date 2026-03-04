@@ -1,7 +1,9 @@
-"""Run C++ benchmarks and generate plots.
+"""
+Run C++ benchmarks and generate plots.
 
-Usage:
-  python -m orchestration.run_bench --build-dir ../build --config ../configs/bench.yaml --out-dir ../out
+Usage (from repo root):
+  cd python
+  python -m orchestration.run_bench --build-dir ..\\build --config ..\\configs\\bench.yaml --out-dir ..\\out
 
 This script is intentionally simple: it shells out to the compiled binary.
 """
@@ -10,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import subprocess
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -22,6 +25,11 @@ def run_cmd(cmd: list[str]) -> None:
     subprocess.check_call(cmd)
 
 
+def resolve_from_cwd(p: str) -> Path:
+    """Resolve a path exactly as written (relative to current working directory)."""
+    return Path(p).expanduser().resolve()
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--build-dir", required=True)
@@ -29,22 +37,30 @@ def main() -> None:
     ap.add_argument("--out-dir", required=True)
     args = ap.parse_args()
 
-    build_dir = Path(args.build_dir)
-    base = Path.cwd().parent  # parent of the current working directory
+    build_dir = resolve_from_cwd(args.build_dir)
+    out_dir = resolve_from_cwd(args.out_dir)
+    config_path = resolve_from_cwd(args.config)
 
-    build_dir = Path(args.build_dir)
-    out_dir   = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
 
-    if not build_dir.is_absolute():
-        build_dir = (base / build_dir).expanduser().resolve()
+    # Handle Windows .exe if needed
+    exe = build_dir / "Zetaforge_bench"
+    exe_exe = exe.with_suffix(".exe")
+    if exe_exe.exists():
+        exe = exe_exe
 
-    if not out_dir.is_absolute():
-        out_dir = (base / out_dir).expanduser().resolve()
+    if not exe.exists():
+        raise FileNotFoundError(f"Benchmark executable not found: {exe}")
 
     csv_path = out_dir / "bench.csv"
-    print(f"testing: {out_dir}")
-    exe = build_dir / "Zetaforge_bench"
-    run_cmd([str(exe), "--config", args.config, "--out", str(csv_path)])
+
+    print("cwd      :", Path.cwd())
+    print("build_dir :", build_dir)
+    print("config   :", config_path)
+    print("out_dir  :", out_dir)
+    print("csv_path :", csv_path)
+
+    run_cmd([str(exe), "--config", str(config_path), "--out", str(csv_path)])
 
     df = pd.read_csv(csv_path)
     print(df)
