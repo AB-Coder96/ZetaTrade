@@ -1,7 +1,5 @@
 #include <iostream>
-
 #include <CLI/CLI.hpp>
-
 #include <zetaforge/bench/bench_runner.hpp>
 #include <zetaforge/config.hpp>
 #include <zetaforge/util/logging.hpp>

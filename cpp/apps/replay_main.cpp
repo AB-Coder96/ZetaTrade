@@ -1,8 +1,6 @@
 #include <cstdint>
 #include <iostream>
-
 #include <CLI/CLI.hpp>
-
 #include <zetaforge/book/l2_book.hpp>
 #include <zetaforge/ingest/jsonl_reader.hpp>
 #include <zetaforge/util/logging.hpp>
