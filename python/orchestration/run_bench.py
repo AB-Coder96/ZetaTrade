@@ -42,7 +42,7 @@ def main() -> None:
         out_dir = (base / out_dir).expanduser().resolve()
 
     csv_path = out_dir / "bench.csv"
-    print(out_dir)
+    print(f"testing: {out_dir}")
     exe = build_dir / "Zetaforge_bench"
     run_cmd([str(exe), "--config", args.config, "--out", str(csv_path)])
 
