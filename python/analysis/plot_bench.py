@@ -15,9 +15,9 @@ def plot_bench(df: pd.DataFrame, out_path: str | Path) -> None:
     x = range(len(df))
 
     plt.figure()
-    plt.plot(x, df["book_p50_ns"], label="p50")
-    plt.plot(x, df["book_p99_ns"], label="p99")
-    plt.plot(x, df["book_p999_ns"], label="p99.9")
+    plt.plot(x, df["book_p50_ns"], label="p50", marker="o")
+    plt.plot(x, df["book_p99_ns"], label="p99", marker="o")
+    plt.plot(x, df["book_p999_ns"], label="p99.9", marker="o")
     plt.xlabel("run")
     plt.ylabel("latency (ns)")
     plt.title("Replay → Book Update Latency")
