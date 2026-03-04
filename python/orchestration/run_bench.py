@@ -30,8 +30,16 @@ def main() -> None:
     args = ap.parse_args()
 
     build_dir = Path(args.build_dir)
-    out_dir = Path(args.out_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
+    base = Path.cwd().parent  # parent of the current working directory
+
+    build_dir = Path(args.build_dir)
+    out_dir   = Path(args.out_dir)
+
+    if not build_dir.is_absolute():
+        build_dir = (base / build_dir).expanduser().resolve()
+
+    if not out_dir.is_absolute():
+        out_dir = (base / out_dir).expanduser().resolve()
 
     csv_path = out_dir / "bench.csv"
 
