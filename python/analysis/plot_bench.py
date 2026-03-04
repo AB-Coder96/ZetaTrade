@@ -20,6 +20,7 @@ def plot_bench(df: pd.DataFrame, out_path: str | Path) -> None:
     plt.plot(x, df["book_p999_ns"], label="p99.9", marker="o")
     plt.xlabel("run")
     plt.ylabel("latency (ns)")
+    plt.yscale("log")
     plt.title("Replay → Book Update Latency")
     plt.legend()
     plt.tight_layout()
