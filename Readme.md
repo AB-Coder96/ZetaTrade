@@ -144,11 +144,9 @@ Zetaforge/
 
 - Add an ITCH-style equities replay (or futures incremental feed) after crypto baseline
 - Improve queue-position model for maker strategies
-- Add kernel-bypass ingest experiment (AF_XDP) behind a feature flag
 - Continuous benchmark regression via CI
 - Drift monitoring + PnL attribution panels in MarketOps dashboard
-
-## next step
+- spreads, straddles, strangles, iron condors, and other multi-leg structures
 - Fix checksum
 - complicate dataset beyond locked markets
 - 100k–1M events (including warm up)
