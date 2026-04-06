@@ -1,6 +1,6 @@
-# Zetaforge — Deterministic Market Replay & Execution Lab
+# ZetaTrade— Deterministic Market Replay & Execution Lab
 
-Zetaforge is a production-ready trading-systems portfolio project:
+ZetaTrade is a production-ready trading-systems portfolio project:
 
 - Market data ingestion + normalization
 - Deterministic replay + exchange simulation
